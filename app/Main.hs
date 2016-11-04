@@ -2,10 +2,10 @@
 
 module Main where
 
-import Web.Scotty (ScottyM)
-import Data.Monoid ((<>))
 import Control.Monad.IO.Class (liftIO)
-import qualified Web.Scotty as Server
+import Web.Scotty (ScottyM)
+import qualified Web.Scotty as Scotty
+import qualified Actions
 
 
 
@@ -13,7 +13,7 @@ port :: Int
 port = 8080
 
 main :: IO ()
-main = Server.scotty port routes
+main = Scotty.scotty port routes
 
 
 
@@ -23,6 +23,6 @@ routes :: ScottyM ()
 routes = join
 
 join :: ScottyM ()
-join = Server.post "/join" $ do
-  message <- Server.param "message"
-  liftIO . putStrLn $ "Client says: " <> message
+join = Scotty.post "/join" $ do
+  email <- Scotty.param "email"
+  liftIO $ Actions.joinSlack email
