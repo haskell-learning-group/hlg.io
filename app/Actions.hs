@@ -15,11 +15,12 @@ import qualified Web.Scotty as Server
 
 
 type Email = Text
+type Token = Text
 
 
 
-joinSlack :: Email -> IO ()
-joinSlack email = do
+joinSlack :: Token -> Email -> IO ()
+joinSlack token email = do
   res <- HTTP.post (Text.unpack uri) nil
   LBChar8.putStrLn (res ^. HTTP.responseBody)
   where
@@ -27,4 +28,3 @@ joinSlack email = do
   nil   = ""
   uri   = root <> "?email=" <> email <> "&token=" <> token
   root  = "https://slack.com/api/users.admin.invite"
-  token = "TODO"
